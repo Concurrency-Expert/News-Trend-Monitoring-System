@@ -24,17 +24,17 @@ class Settings(BaseSettings):
         "tempo": {
             "name": "Tempo.co",
             "rss_url": "https://rss.tempo.co/nasional",
-            "index_url": "https://tempo.co/",
+            "index_url": "https://tempo.co/indeks",
         },
         "republika": {
             "name": "Republika",
             "rss_url": "https://www.republika.co.id/rss/nasional",
-            "index_url": "https://news.republika.co.id/",
+            "index_url": "https://www.republika.co.id/index.aspx",
         },
         "cnbc": {
             "name": "CNBC Indonesia",
             "rss_url": "https://www.cnbcindonesia.com/news/rss",
-            "index_url": "https://www.cnbcindonesia.com/",
+            "index_url": "https://www.cnbcindonesia.com/indeks/",
         },
         "kompas": {
             "name": "Kompas.com",
