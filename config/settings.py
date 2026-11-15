@@ -23,12 +23,12 @@ class Settings(BaseSettings):
     NEWS_CONFIGS: Dict[str, Dict[str, Any]] = {
         "tempo": {
             "name": "Tempo.co",
-            "rss_url": "https://rss.tempo.co/",
+            "rss_url": "https://rss.tempo.co/nasional",
             "index_url": "https://tempo.co/",
         },
         "republika": {
             "name": "Republika",
-            "rss_url": "https://www.republika.co.id/rss/",
+            "rss_url": "https://www.republika.co.id/rss/nasional",
             "index_url": "https://news.republika.co.id/",
         },
         "cnbc": {
