@@ -198,3 +198,36 @@ def parse_indonesian_date(raw_date: str) -> datetime:
         return dt.astimezone(timezone.utc)
     except Exception:
         return datetime.now(timezone.utc)
+
+def is_source_video(title: str, url: str) -> bool:
+
+    title_lower = (title or "").lower()
+    url_lower = (url or "").lower()
+
+    # title matching
+    video_keywords = [
+        "video:", 
+        "[video]", 
+        "(video)", 
+        "video -", 
+        "live streaming"
+    ]
+
+    for keyword in video_keywords:
+        if keyword in title_lower:
+            return True
+
+    # url matching
+    url_patterns = [
+        "/video/", 
+        "/video-", 
+        "video.", 
+        "/tv/", 
+        "/watch/"
+    ]
+    for pattern in url_patterns:
+        if pattern in url_lower:
+            return True
+
+    
+    return False
