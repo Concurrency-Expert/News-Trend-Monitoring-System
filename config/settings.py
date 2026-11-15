@@ -39,7 +39,7 @@ class Settings(BaseSettings):
         "kompas": {
             "name": "Kompas.com",
             "rss_url": None,
-            "index_url": "https://www.kompas.com/",
+            "index_url": "https://indeks.kompas.com/",
         }
     }
 
