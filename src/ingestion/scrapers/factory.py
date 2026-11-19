@@ -2,13 +2,21 @@ import logging
 from typing import Dict, Type, List
 from src.ingestion.scrapers.base import BasePortalStrategy
 from src.ingestion.scrapers.portals.kompas import KompasStrategy
+from src.ingestion.scrapers.portals.detik import DetikStrategy
+from src.ingestion.scrapers.portals.cnbc import CNBCStrategy
+from src.ingestion.scrapers.portals.republika import RepublikaStrategy
+
+
 
 logger = logging.getLogger(__name__)
 
 class ScraperFactory:
 
     NewsStrategy: Dict[str, Type[BasePortalStrategy]] = {
-        "kompas": KompasStrategy
+        "kompas": KompasStrategy,
+        "detik": DetikStrategy,
+        "republika": RepublikaStrategy,
+        "cnbc": CNBCStrategy
     }
 
     @classmethod # it helps so I don't have to factory = ScraperFactory(); I can automate ScraperFactory.get_strategy("")
