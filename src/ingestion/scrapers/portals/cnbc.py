@@ -55,36 +55,42 @@ class CNBCStrategy(BasePortalStrategy):
         return urls_list
 
     def clean_portal_noise(self, text: str) -> str:
-
         if not text:
             return ""
-
-        # Menghapus tag media lain dalam kurung siku
+        
+        # delete kurung siku yang memuat indikasi video, link, foto, atau media
         text = re.sub(
-            r"\[\s*(?:video|foto|photo|infografis|embed|sosmed|instagram|twitter|tiktok|youtube)[^\]]*\]",
+            r"\[[^\]]*(?:video|link|http|www|foto|gambar|media|gambas)[^\]]*\]",
             "",
             text,
             flags=re.IGNORECASE,
         )
-
+        # delete link URL mentah yang tertinggal dari embed
+        text = re.sub(r"https?://\S+", "", text)
+        
         CNBC_TAIL_MARKERS = [
-            "Saksikan video terkait di sini:",
-            "Saksikan Video:",
-            "Simak Video:",
-            "Saksikan video",
-            "Simak video",
+            "saksikan video",
+            "simak video",
+            "tonton video",
+            "video terkait",
         ]
+        text_lower = text.lower()
+        min_idx = -1
         for marker in CNBC_TAIL_MARKERS:
-            idx = text.find(marker)
+            idx = text_lower.find(marker)
             if idx != -1:
-                text = text[:idx]
-
-        # delete for reporter tag
+                if min_idx == -1 or idx < min_idx:
+                    min_idx = idx
+        if min_idx != -1:
+            text = text[:min_idx]
+            
         while True:
             prev = text.strip()
-
             cleaned = re.sub(r"\[[^\]]*\]\s*$", "", prev)
-
+            cleaned = re.sub(
+                r"(?:\n|\A)\s*video[^\n]*$", "", cleaned, flags=re.IGNORECASE
+            )
+            # delete inisial reporter
             
             cleaned = re.sub(
                 r"\(\s*[a-zA-Z\s]{2,20}(?:\s*/\s*[a-zA-Z\s]{2,20})*\s*\)[;\.:\-]*\s*$",
@@ -92,11 +98,9 @@ class CNBCStrategy(BasePortalStrategy):
                 cleaned.strip(),
                 flags=re.IGNORECASE,
             )
-
             if cleaned == prev:
                 break
             text = cleaned
 
         text = re.sub(r"\n\s*\n+", "\n\n", text)
-
         return text.strip()
