@@ -4,7 +4,7 @@ import trafilatura
 import logging
 from typing import List, Dict, Any, Optional
 from config.settings import settings
-from src.ingestion.preprocessor import clean_html_text
+from src.ingestion.preprocessor import clean_html_text, sanitize_common_noise
 logger = logging.getLogger(__name__)
 
 class BasePortalStrategy(ABC):
@@ -15,6 +15,10 @@ class BasePortalStrategy(ABC):
         self.session.headers.update(settings.DEFAULT_HEADERS)
         self.timeout = settings.REQUEST_TIMEOUT
 
+    def clean_portal_noise(self, text: str) -> str:
+        
+        return text
+    
     def fetch_html(self, url: str) -> Optional[str]:
         try:
             response = self.session.get(url, timeout=self.timeout)
@@ -42,11 +46,16 @@ class BasePortalStrategy(ABC):
 
         metadata = trafilatura.extract_metadata(html)
 
-        if not extracted_text or len(extracted_text.strip()) < 150:
-            logger.info(f"Article is skipped by the system because the length of text is too short / there's no text: {url}")
-            return None
-        
+
         clean_text = clean_html_text(extracted_text)
+        clean_text = self.clean_portal_noise(clean_text)
+        clean_text = sanitize_common_noise(clean_text)
+
+        if not clean_text :
+            logger.info(f"Article is skipped by the system because there's no text: {url}")
+            return None
+       
+
         title = metadata.title if (metadata and metadata.title) else None
 
         return {

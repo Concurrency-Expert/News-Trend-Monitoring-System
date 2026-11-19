@@ -135,13 +135,16 @@ def clean_html_text(data: str) -> str:
         tag.decompose() # delete tag beserta isinya 
 
     # fetch text
-    text = soup.get_text(separator=" ")
+    text = soup.get_text(separator="\n")
 
     # change non-breaking space '\xa0' dgn spasi biasa
     text = text.replace("\xa0", " ")
 
-    # regex r"\s+": cari 2 spasi atau lebih (termasuk enter/tab), lalu ganti dengan 1 spasi tunggal
-    text = re.sub(r"\s+", " ", text).strip()
+   # change spasi/tab horizontal ganda jadi 1 spasi
+    text = re.sub(r"[ \t]+", " ", text)
+    
+    # sanitize enter berlebih (maksimal 2 enter agar jadi jeda paragraf yang rapi)
+    text = re.sub(r"\n\s*\n+", "\n\n", text).strip()
     
     return text
 
@@ -198,6 +201,21 @@ def parse_indonesian_date(raw_date: str) -> datetime:
         return dt.astimezone(timezone.utc)
     except Exception:
         return datetime.now(timezone.utc)
+
+def sanitize_common_noise(text: str) -> str:
+    if not text:
+        return ""
+
+    text = re.sub(r"Baca juga:[^\n]*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"BACA JUGA:[^\n]*", "", text)
+    text = re.sub(r"Simak juga:[^\n]*", "", text, flags=re.IGNORECASE)
+    
+    lines = []
+    for line in text.split("\n"):
+        if line.strip():
+            lines.append(line.strip())
+            
+    return "\n\n".join(lines)
 
 def is_source_video(title: str, url: str) -> bool:
 
