@@ -21,10 +21,10 @@ class Settings(BaseSettings):
 
     # ENDPOINT PORTAL BERITA    
     NEWS_CONFIGS: Dict[str, Dict[str, Any]] = {
-        "tempo": {
-            "name": "Tempo.co",
-            "rss_url": "https://rss.tempo.co/nasional",
-            "index_url": "https://tempo.co/indeks",
+        "detik": {
+            "name": "detik.com",
+            "rss_url": None,
+            "index_url": "https://news.detik.com/indeks",
         },
         "republika": {
             "name": "Republika",
