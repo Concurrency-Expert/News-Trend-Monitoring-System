@@ -47,6 +47,15 @@ class Settings(BaseSettings):
         }
     }
 
+    # NLP CLUSTERING CONFIGURATION (Phase 2)
+    NLP_SIMILARITY_THRESHOLD: float = 0.60
+    NLP_MIN_CLUSTER_SIZE: int = 2
+    NLP_TOP_KEYWORDS: int = 8
+    NLP_LABEL_KEYWORDS: int = 2
+    NLP_MAX_FEATURES: int = 5000
+    NLP_TITLE_WEIGHT: int = 3
+    NLP_USE_STEMMING: bool = True
+
     class Config:
         env_file = ".env"
         extra = "ignore"
