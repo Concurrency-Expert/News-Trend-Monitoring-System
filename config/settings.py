@@ -4,6 +4,10 @@ from typing import Dict, Any
 
 class Settings(BaseSettings):
 
+    # MONGO DB CONFIGURATION
+    MONGO_URI : str = Field(default="mongodb://localhost:27018")
+    MONGO_DB_NAME : str = Field(default="news_monitoring_db")
+
     # HTTP CLIENT CONFIGURATION
     # use for agar tidak terdetect sebagai bot di firewall
     DEFAULT_HEADERS: Dict[str, str] = {
@@ -21,25 +25,25 @@ class Settings(BaseSettings):
 
     # ENDPOINT PORTAL BERITA    
     NEWS_CONFIGS: Dict[str, Dict[str, Any]] = {
-        "tempo": {
-            "name": "Tempo.co",
-            "rss_url": "https://rss.tempo.co/",
-            "index_url": "https://tempo.co/",
+        "detik": {
+            "name": "detik.com",
+            "rss_url": None,
+            "index_url": "https://news.detik.com/indeks",
         },
         "republika": {
             "name": "Republika",
-            "rss_url": "https://www.republika.co.id/rss/",
-            "index_url": "https://news.republika.co.id/",
+            "rss_url": "https://www.republika.co.id/rss/nasional",
+            "index_url": "https://www.republika.co.id/index.aspx",
         },
         "cnbc": {
             "name": "CNBC Indonesia",
             "rss_url": "https://www.cnbcindonesia.com/news/rss",
-            "index_url": "https://www.cnbcindonesia.com/",
+            "index_url": "https://www.cnbcindonesia.com/indeks/",
         },
         "kompas": {
             "name": "Kompas.com",
             "rss_url": None,
-            "index_url": "https://www.kompas.com/",
+            "index_url": "https://indeks.kompas.com/",
         }
     }
 
