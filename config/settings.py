@@ -4,6 +4,10 @@ from typing import Dict, Any
 
 class Settings(BaseSettings):
 
+    # MONGO DB CONFIGURATION
+    MONGO_URI : str = Field(default="mongodb://localhost:27018")
+    MONGO_DB_NAME : str = Field(default="news_monitoring_db")
+
     # HTTP CLIENT CONFIGURATION
     # use for agar tidak terdetect sebagai bot di firewall
     DEFAULT_HEADERS: Dict[str, str] = {
